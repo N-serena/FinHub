@@ -2,15 +2,20 @@
 // It features a centered title, subtitle, and a call-to-action button to connect a bank account.
 
 import { usePlaidLink } from "react-plaid-link";
+import useUserStore from "../store/useUserStore";
 
 export default function LandingPage() {
   const linkToken = "link-sandbox-c0565564-40a6-410d-9a7f-34783882560d"; // Replace with your actual link token
+  const setPublicToken = useUserStore((state) => state.setPublicToken);
+  //const setIsLinked = useUserStore((state) => state.setIsLinked);
 
   const { open, ready } = usePlaidLink({
     token: linkToken,
     onSuccess: (public_token, metadata) => {
       console.log("public_token:", public_token);
       console.log("metadata:", metadata);
+      setPublicToken(public_token);
+      //setIsLinked(true);
       window.location.href = "/dashboard";
     },
   });
